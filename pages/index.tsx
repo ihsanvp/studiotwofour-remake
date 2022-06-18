@@ -12,15 +12,15 @@ export default function HomePage() {
         <Slideshow
           slides={[
             {
-              title: "We'are all about Integrating digital solutions",
+              title: "We'are all about\nIntegrating digital solutions",
               img: s1,
             },
             {
-              title: "We'are all about Moving forward brands",
+              title: "We'are all about\nMoving forward brands",
               img: s2,
             },
             {
-              title: "We'are all about Connecting user experiences",
+              title: "We'are all about\nConnecting user experiences",
               img: s3,
             },
           ]}
