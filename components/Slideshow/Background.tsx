@@ -14,7 +14,7 @@ export default function Background(props: Props) {
 
   return (
     <motion.div
-      className="absolute inset-0 scale-150"
+      className="absolute -inset-40"
       variants={variants}
       initial="initial"
       animate="animate"
