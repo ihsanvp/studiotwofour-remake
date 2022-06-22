@@ -25,7 +25,6 @@ export default function Background(props: Props) {
         alt={`slide-${props.index}`}
         layout="fill"
         objectFit="cover"
-        priority
         unoptimized
       />
     </motion.div>

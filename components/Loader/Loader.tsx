@@ -14,13 +14,15 @@ export default function Loader(props: Props) {
     await document.fonts.ready;
   }
 
-  async function loadImages() {
+  function loadImages(): Promise<void>[] {
     const cache = document.createElement("div");
 
     cache.id = "cache";
     cache.style.position = "absolute";
     cache.style.zIndex = "-1000";
     cache.style.opacity = "0";
+    cache.style.visibility = "hidden";
+    cache.style.display = "none";
 
     document.body.appendChild(cache);
 
@@ -38,13 +40,17 @@ export default function Loader(props: Props) {
       });
     }
 
+    const promises = [];
+
     for (const url of props.imageUrls) {
-      await preload(url);
+      promises.push(preload(url));
     }
+
+    return promises;
   }
 
   async function load() {
-    await Promise.all([loadFonts(), loadImages()]);
+    await Promise.all([loadFonts(), ...loadImages()]);
 
     setReady(true);
   }
