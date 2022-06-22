@@ -1,8 +1,14 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
-interface WrapperProps {
+interface WordWrapperProps {
   children: ReactNode;
+  className?: string;
+}
+
+interface CharacterWrapperProps {
+  content: string;
+  variants: Variants;
 }
 
 interface Props {
@@ -12,9 +18,21 @@ interface Props {
 }
 
 // Word wrapper
-function Wrapper(props: WrapperProps) {
+function WordWrapper(props: WordWrapperProps) {
   // We'll do this to prevent wrapping of words using CSS
-  return <span className="word-wrapper">{props.children}</span>;
+  return (
+    <span className={`inline-block ${props.className}`}>{props.children}</span>
+  );
+}
+
+function CharacterWrapper(props: CharacterWrapperProps) {
+  return (
+    <span className="pb-3 md:pb-4 overflow-hidden inline-block">
+      <motion.span className="inline-block" variants={props.variants}>
+        {props.content}
+      </motion.span>
+    </span>
+  );
 }
 
 // Map API "type" vaules to JSX tag names
@@ -60,6 +78,32 @@ export default function AnimatedText(props: Props) {
   // Get the tag name from tagMap
   // const Tag = tagMap[props.type];
 
+  function renderText() {
+    let className = "";
+
+    return words.map((word, index) => {
+      if (word.length == 2 && word[0] == "|") {
+        className = "text-yellow-500";
+        console.log("ok");
+        return;
+      }
+
+      if (word.length == 2 && word[0] == "\n") {
+        return <br key={index} />;
+      }
+      return (
+        // Wrap each word in the Wrapper component
+        <WordWrapper key={index} className={className}>
+          {words[index].flat().map((element, index) => {
+            return (
+              <CharacterWrapper key={index} content={element} variants={item} />
+            );
+          })}
+        </WordWrapper>
+      );
+    });
+  }
+
   useEffect(() => {
     const timeout = setTimeout(() => setAnimate("visible"), 500);
     return () => clearTimeout(timeout);
@@ -82,37 +126,7 @@ export default function AnimatedText(props: Props) {
       }}
       className={props.className}
     >
-      {words.map((word, index) => {
-        return (
-          // Wrap each word in the Wrapper component
-          <Wrapper key={index}>
-            {words[index].flat().map((element, index) => {
-              if (element == "\n") {
-                return <br key={index} />;
-              }
-
-              return (
-                <span
-                  style={{
-                    paddingBottom: 15,
-                    overflow: "hidden",
-                    display: "inline-block",
-                  }}
-                  key={index}
-                >
-                  <motion.span
-                    style={{ display: "inline-block" }}
-                    variants={item}
-                  >
-                    {element}
-                  </motion.span>
-                </span>
-              );
-            })}
-          </Wrapper>
-        );
-      })}
-      {/* {} */}
+      {renderText()}
     </motion.div>
   );
 }
