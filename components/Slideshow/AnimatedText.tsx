@@ -84,7 +84,6 @@ export default function AnimatedText(props: Props) {
     return words.map((word, index) => {
       if (word.length == 2 && word[0] == "|") {
         className = "text-yellow-500";
-        console.log("ok");
         return;
       }
 
