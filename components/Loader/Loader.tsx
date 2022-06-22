@@ -17,9 +17,12 @@ export default function Loader(props: Props) {
   async function loadImages() {
     const cache = document.createElement("div");
 
+    cache.id = "cache";
     cache.style.position = "absolute";
     cache.style.zIndex = "-1000";
     cache.style.opacity = "0";
+
+    document.body.appendChild(cache);
 
     function preload(url: string): Promise<void> {
       return new Promise((resolve) => {
